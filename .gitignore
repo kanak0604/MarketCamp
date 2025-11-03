@@ -1,0 +1,26 @@
+# Visual Studio / .NET related
+**/.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+ 
+# Build output folders (adjust 'SERVER' if your folder name differs in case)
+#SERVER/bin/
+#SERVER/obj/
+**/bin/
+**/obj/
+ 
+# To ignore all bin and obj folders recursively (if multiple projects)
+# **/bin/
+# **/obj/
+ 
+# Angular related
+**/node_modules/
+**/dist/
+ 
+# Logs and caches
+*.log
+*.cache
+ 
+ 
