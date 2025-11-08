@@ -34,7 +34,7 @@ namespace MarketCampaignProject.Services
                 {
                     Username = dto.Username,
                     Email = dto.Email,
-                    PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(dto.Password)
+                    PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(dto.Password),
                 };
                 //save to DB
                 _context.Users.Add(newUser);
@@ -47,27 +47,35 @@ namespace MarketCampaignProject.Services
         public async Task<ResponseDto> LoginAsync(LoginDto dto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+
             if (user == null)
             {
+                // user not found
                 return new ResponseDto(false, "Invalid username or password");
             }
             else
             {
+                // check password
                 bool isPasswordCorrect = BCrypt.Net.BCrypt.EnhancedVerify(dto.Password, user.PasswordHash);
 
                 if (isPasswordCorrect)
                 {
-                    //generate jwt token 
+                    // generate jwt token
                     var token = _jwt.GenerateToken(user);
 
-                    return new ResponseDto(true,"login successful", new { token });
+                    // set session duration in seconds (30 minutes)
+                    int sessionDuration = 30 * 60;
+
+                    // return token + session duration
+                    return new ResponseDto(true, "Login successful", new { token, expiresIn = sessionDuration });
                 }
-                else 
+                else
                 {
-                    //password is incorrect 
-                    return new ResponseDto(false, "Invalid password",null);
+                    // password incorrect
+                    return new ResponseDto(false, "Invalid password", null);
                 }
             }
         }
+
     }
 }

@@ -24,5 +24,8 @@ namespace MarketCampaignProject.Data // put all the code in the folder data
             //in order to set up the data and configure( arrange )it .
             public DbSet<User> Users { get; set; }
             //Give me the magic door named Users which will open the door for user table 
+            public DbSet<Campaign> Campaigns { get; set; }
+        public DbSet<Lead> Leads { get; set; }
+
     }
 }
